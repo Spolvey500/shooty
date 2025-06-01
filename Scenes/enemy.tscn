@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://b2expaxqp088c"]
+
+[ext_resource type="Texture2D" uid="uid://dniu8m3ikqili" path="res://Sprites/arrow-enemy.png" id="1_n5ieu"]
+[ext_resource type="Script" path="res://Scripts/enemy.gd" id="1_p3ork"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vyaen"]
+radius = 11.0
+
+[node name="Enemy" type="CharacterBody2D" groups=["Enemies"]]
+collision_layer = 4
+collision_mask = 7
+motion_mode = 1
+script = ExtResource("1_p3ork")
+speed = 100.0
+hp = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_vyaen")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("1_n5ieu")
+
+[node name="Barrel" type="Node2D" parent="."]
+position = Vector2(11, 0)
