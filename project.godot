@@ -23,7 +23,7 @@ SignalBus="*res://Scripts/SignalBus.gd"
 
 window/size/resizable=false
 window/stretch/mode="canvas_items"
-window/stretch/aspect="expand"
+window/stretch/aspect="keep_width"
 
 [editor_plugins]
 
