@@ -3,6 +3,9 @@ extends CharacterBody2D
 var BULLET := preload("res://Scenes/player_bullet.tscn")
 @onready var TIMER := $Timer
 
+@export_category("Stats")
+@export var total_points:int = 0
+@export var hp:int = 100
 @export var speed:float = 300
 @export var speed_mult:float = 1
 @export var rate_of_fire:float = 1
@@ -11,6 +14,13 @@ var BULLET := preload("res://Scenes/player_bullet.tscn")
 @export var bullet_range:float = 0.75
 @export var bullet_damage:float = 1
 
+@export_category("UI")
+@export var hp_label:Label
+@export var points_label:Label
+@export var gameover_screen:Control
+
+func _ready() -> void:
+	SignalBus.enemy_died.connect(_on_enemy_died)
 
 func _physics_process(delta: float) -> void:
 	move()
@@ -21,7 +31,7 @@ func _physics_process(delta: float) -> void:
 		change_shoot_timer(rate_of_fire)
 
 func _process(delta: float) -> void:
-	pass
+	update_ui_stats()
 
 func move():
 	
@@ -54,6 +64,18 @@ func shoot():
 	bullet_instance.damage = bullet_damage
 	get_parent().add_child(bullet_instance)
 
+func hurt(damage:int):
+	hp -= damage
+	if hp <= 0:
+		die()
+
+func die():
+	print("dead")
+	gameover_screen.visible = true
+
+func _on_enemy_died(points):
+	total_points += points
+
 func _on_timer_timeout():
 	shoot()
 
@@ -61,3 +83,7 @@ func change_shoot_timer(new_rate:float):
 	TIMER.stop()
 	TIMER.wait_time = new_rate
 	TIMER.start()
+
+func update_ui_stats():
+	hp_label.text = "HP: " + str(hp)
+	points_label.text = "Score: " +str(total_points)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://b2expaxqp088c"]
+[gd_scene load_steps=5 format=3 uid="uid://b2expaxqp088c"]
 
 [ext_resource type="Texture2D" uid="uid://dniu8m3ikqili" path="res://Sprites/arrow-enemy.png" id="1_n5ieu"]
 [ext_resource type="Script" path="res://Scripts/enemy.gd" id="1_p3ork"]
@@ -6,13 +6,18 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_vyaen"]
 radius = 11.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_grjj2"]
+radius = 13.0
+
 [node name="Enemy" type="CharacterBody2D" groups=["Enemies"]]
 collision_layer = 4
 collision_mask = 7
 motion_mode = 1
 script = ExtResource("1_p3ork")
+points = 1
 speed = 100.0
-hp = 1.0
+hp = 1
+damage = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_vyaen")
@@ -23,3 +28,13 @@ texture = ExtResource("1_n5ieu")
 
 [node name="Barrel" type="Node2D" parent="."]
 position = Vector2(11, 0)
+
+[node name="Hitbox" type="Area2D" parent="." groups=["Enemies"]]
+collision_layer = 4
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("CircleShape2D_grjj2")
+
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_collision"]
+[connection signal="body_exited" from="Hitbox" to="." method="_on_hitbox_body_exited"]

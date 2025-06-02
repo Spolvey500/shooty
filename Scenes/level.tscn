@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://dr1caf1fqfv04"]
+[gd_scene load_steps=4 format=3 uid="uid://dr1caf1fqfv04"]
 
 [ext_resource type="Script" path="res://Scripts/level.gd" id="1_cwxrl"]
 [ext_resource type="PackedScene" uid="uid://b54mnj0brw8ii" path="res://Scenes/player.tscn" id="2_827hs"]
-[ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick_scene.tscn" id="3_e0gxw"]
 [ext_resource type="Texture2D" uid="uid://ddmq7jxoumtft" path="res://Sprites/backgrounds/Starfields/Starfield 1 - 1024x1024.png" id="4_auair"]
 
 [node name="Level" type="Node2D" node_paths=PackedStringArray("basic_enemy_timer")]
@@ -12,15 +11,7 @@ max_spawn_distance = 850.0
 basic_enemy_timer = NodePath("Enemy_Timers/Basic_Enemy")
 basic_enemy_spawn_rate = 2.0
 
-[node name="Player" parent="." instance=ExtResource("2_827hs")]
-z_index = 1
-position = Vector2(551, 355)
-
-[node name="Camera2D" type="Camera2D" parent="Player"]
-
-[node name="CanvasLayer" type="CanvasLayer" parent="Player"]
-
-[node name="Control" type="Control" parent="Player/CanvasLayer"]
+[node name="Background" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -30,49 +21,7 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Joystick_Aim" parent="Player/CanvasLayer/Control" instance=ExtResource("3_e0gxw")]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -325.0
-offset_top = -326.0
-offset_right = -25.0
-offset_bottom = -26.0
-grow_horizontal = 0
-scale = Vector2(0.75, 0.75)
-deadzone_size = 15.0
-visibility_mode = 1
-action_left = "aim_left"
-action_right = "aim_right"
-action_up = "aim_up"
-action_down = "aim_down"
-
-[node name="Joystick_Move" parent="Player/CanvasLayer/Control" instance=ExtResource("3_e0gxw")]
-layout_mode = 1
-offset_left = 100.0
-offset_top = -326.0
-offset_right = 400.0
-offset_bottom = -26.0
-scale = Vector2(0.75, 0.75)
-deadzone_size = 15.0
-visibility_mode = 1
-action_left = "move_left"
-action_right = "move_right"
-action_up = "move_up"
-action_down = "move_down"
-
-[node name="Control" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="TextureRect" type="TextureRect" parent="Control"]
+[node name="TextureRect" type="TextureRect" parent="Background"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -87,6 +36,10 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("4_auair")
 stretch_mode = 1
+
+[node name="Player" parent="." instance=ExtResource("2_827hs")]
+z_index = 1
+position = Vector2(551, 355)
 
 [node name="Enemy_Timers" type="Node2D" parent="."]
 

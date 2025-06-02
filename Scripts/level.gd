@@ -17,7 +17,10 @@ func _ready() -> void:
 	basic_enemy_timer.start()
 
 func _on_basic_enemy_timeout() -> void:
-	var enemy := basic_enemy.instantiate()
+	spawn_enemy(basic_enemy)
+
+func spawn_enemy(enemy_scene:Resource):
+	var enemy = enemy_scene.instantiate()
 	add_child(enemy)
 	var random_dir = Vector2(randf_range(-1,1), randf_range(-1,1))
 	var random_distance = randi_range(min_spawn_distance, max_spawn_distance)
