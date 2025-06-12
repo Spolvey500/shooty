@@ -4,12 +4,14 @@
 [ext_resource type="PackedScene" uid="uid://b54mnj0brw8ii" path="res://Scenes/player.tscn" id="2_827hs"]
 [ext_resource type="Texture2D" uid="uid://ddmq7jxoumtft" path="res://Sprites/backgrounds/Starfields/Starfield 1 - 1024x1024.png" id="4_auair"]
 
-[node name="Level" type="Node2D" node_paths=PackedStringArray("basic_enemy_timer")]
+[node name="Level" type="Node2D" node_paths=PackedStringArray("phase_timer", "basic_enemy_timer")]
 script = ExtResource("1_cwxrl")
-min_spawn_distance = 750.0
-max_spawn_distance = 850.0
+min_spawn_distance = 400.0
+max_spawn_distance = 500.0
+phase_change_rate = 20.0
+phase_timer = NodePath("Enemy_Timers/Phase_Timer")
 basic_enemy_timer = NodePath("Enemy_Timers/Basic_Enemy")
-basic_enemy_spawn_rate = 2.0
+basic_enemy_spawn_rate = 3.5
 
 [node name="Background" type="Control" parent="."]
 layout_mode = 3
@@ -47,4 +49,8 @@ position = Vector2(551, 355)
 process_callback = 0
 wait_time = 2.0
 
+[node name="Phase_Timer" type="Timer" parent="Enemy_Timers"]
+wait_time = 10.0
+
 [connection signal="timeout" from="Enemy_Timers/Basic_Enemy" to="." method="_on_basic_enemy_timeout"]
+[connection signal="timeout" from="Enemy_Timers/Phase_Timer" to="." method="_on_phase_timer_timeout"]

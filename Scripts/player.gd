@@ -3,6 +3,8 @@ extends CharacterBody2D
 var BULLET := preload("res://Scenes/player_bullet.tscn")
 @onready var TIMER := $Timer
 
+@export var invincible:bool = false
+
 @export_category("Stats")
 @export var total_points:int = 0
 @export var hp:int = 100
@@ -17,10 +19,16 @@ var BULLET := preload("res://Scenes/player_bullet.tscn")
 @export_category("UI")
 @export var hp_label:Label
 @export var points_label:Label
+@export var phase_label:Label
 @export var gameover_screen:Control
+
+@export_category("UI_Debug")
+@export var enemy_timer:Label
+@export var phase_timer:Label
 
 func _ready() -> void:
 	SignalBus.enemy_died.connect(_on_enemy_died)
+	print("p: " + str(global_position))
 
 func _physics_process(delta: float) -> void:
 	move()
@@ -32,6 +40,7 @@ func _physics_process(delta: float) -> void:
 
 func _process(delta: float) -> void:
 	update_ui_stats()
+	update_ui_debug_stats()
 
 func move():
 	
@@ -65,7 +74,8 @@ func shoot():
 	get_parent().add_child(bullet_instance)
 
 func hurt(damage:int):
-	hp -= damage
+	if not invincible:
+		hp -= damage
 	if hp <= 0:
 		die()
 
@@ -86,4 +96,11 @@ func change_shoot_timer(new_rate:float):
 
 func update_ui_stats():
 	hp_label.text = "HP: " + str(hp)
-	points_label.text = "Score: " +str(total_points)
+	points_label.text = "Points: " + str(total_points)
+	phase_label.text = "Current Phase: " + str(get_parent().current_phase)
+
+func update_ui_debug_stats():
+	enemy_timer.text = ("Enemy Timer: " + 
+		str(snapped(get_parent().basic_enemy_timer.wait_time, 0.01)))
+	phase_timer.text = ("Phase Timer: " + 
+		str(snapped(get_parent().phase_timer.wait_time, 0.01)))

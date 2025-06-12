@@ -7,15 +7,18 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_kalg3"]
 radius = 11.0
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("hp_label", "points_label", "gameover_screen") groups=["Player"]]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("hp_label", "points_label", "phase_label", "gameover_screen", "enemy_timer", "phase_timer") groups=["Player"]]
 collision_mask = 12
 motion_mode = 1
 script = ExtResource("1_a27uf")
 hp = 250
 speed = 200.0
-hp_label = NodePath("UI/Stats/Hp")
-points_label = NodePath("UI/Stats/Points")
+hp_label = NodePath("UI/Stats/HBoxContainer/Hp")
+points_label = NodePath("UI/Stats/HBoxContainer/Points")
+phase_label = NodePath("UI/Stats/HBoxContainer/Phase")
 gameover_screen = NodePath("UI/GameOverScreen")
+enemy_timer = NodePath("UI/Stats/HBoxContainer2/Enemy Timer")
+phase_timer = NodePath("UI/Stats/HBoxContainer2/Phase Timer")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_kalg3")
@@ -39,24 +42,64 @@ autostart = true
 
 [node name="Stats" type="Control" parent="UI"]
 layout_mode = 3
-anchors_preset = 10
+anchors_preset = 15
 anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/Stats"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -145.5
+offset_right = 145.5
+offset_bottom = 40.0
 grow_horizontal = 2
 
-[node name="Hp" type="Label" parent="UI/Stats"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+[node name="Hp" type="Label" parent="UI/Stats/HBoxContainer"]
+layout_mode = 2
 text = "hp: ---"
 
-[node name="Points" type="Label" parent="UI/Stats"]
+[node name="Points" type="Label" parent="UI/Stats/HBoxContainer"]
+layout_mode = 2
+text = "Score: ---"
+
+[node name="Phase" type="Label" parent="UI/Stats/HBoxContainer"]
+layout_mode = 2
+text = "Current Phase: ---"
+vertical_alignment = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="UI/Stats"]
 layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -40.0
-offset_bottom = 23.0
-grow_horizontal = 0
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -145.5
+offset_top = -40.0
+offset_right = 145.5
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+
+[node name="Enemy Timer" type="Label" parent="UI/Stats/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Enemy Timer: ---"
+horizontal_alignment = 1
+vertical_alignment = 1
+justification_flags = 0
+
+[node name="Phase Timer" type="Label" parent="UI/Stats/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Phase Timer: ---"
+horizontal_alignment = 1
+vertical_alignment = 1
+justification_flags = 0
 
 [node name="Version" type="Label" parent="UI/Stats"]
 layout_mode = 1
@@ -65,12 +108,13 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -53.0
-offset_top = 625.0
-offset_bottom = 648.0
+offset_left = -32.0
+offset_top = -23.0
 grow_horizontal = 0
 grow_vertical = 0
-text = "Build 2"
+text = "v0.1"
+horizontal_alignment = 2
+vertical_alignment = 2
 
 [node name="Joysticks" type="Control" parent="UI"]
 layout_mode = 3
